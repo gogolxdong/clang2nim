@@ -35,11 +35,63 @@ public:
       StringRef str = Lexer::getSourceText(conditionRange, sm, LangOptions(), &invalid);
       llvm::outs() << str <<"\n";
 
-
       Stmt *Else = IfStatement->getElse();
       if (Else)
         TheRewriter.InsertText(Else->getBeginLoc(), "// the 'else' part\n", true, true);
+    } else if (isa<AttributedStmt>(s)) {
+
+    } else if (isa<LabelStmt>(s)) {
+
+    } else if (isa<ValueStmt>(s)) {
+
+    } else if (isa<DefaultStmt>(s)) {
+
+    } else if (isa<CaseStmt>(s)) {
+
+    } else if (isa<SwitchCase>(s)) {
+
+    } else if (isa<CompoundStmt>(s)) {
+
+    } else if (isa<NullStmt>(s)) {
+
+    } else if (isa<DeclStmt>(s)) {
+
+    } else if (isa<SwitchStmt>(s)) {
+
+    } else if (isa<WhileStmt>(s)) {
+
+    } else if (isa<DoStmt>(s)) {
+
+    } else if (isa<ForStmt>(s)) {
+
+    } else if (isa<GotoStmt>(s)) {
+
+    }else if (isa<IndirectGotoStmt>(s)) {
+
+    }else if (isa<ContinueStmt>(s)) {
+
+    }else if (isa<BreakStmt>(s)) {
+
+    }else if (isa<ReturnStmt>(s)) {
+
+    }else if (isa<AsmStmt>(s)) {
+
+    }else if (isa<GCCAsmStmt>(s)) {
+
+    }else if (isa<MSAsmStmt>(s)) {
+
+    }else if (isa<SEHExceptStmt>(s)) {
+
+    }else if (isa<SEHFinallyStmt>(s)) {
+
+    }else if (isa<SEHTryStmt>(s)) {
+
+    }else if (isa<SEHLeaveStmt>(s)) {
+
+    }else if (isa<CapturedStmt>(s)) {
+      
     }
+
 
     return true;
   }
