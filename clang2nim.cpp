@@ -256,8 +256,6 @@ public:
 
   bool VisitFunctionDecl(FunctionDecl *f) {
     if (f->hasBody()) {
-      Stmt *FuncBody = f->getBody();
-
       QualType QT = f->getReturnType();
       std::string TypeStr = QT.getAsString();
 
@@ -280,23 +278,28 @@ public:
       // ST = FuncBody->getEndLoc().getLocWithOffset(1);
       // TheRewriter.InsertText(ST, SSAfter.str(), true, true);
       }else{
-        *FileStream << "proc " + FuncName  + "(";
-        // llvm::outs() << f->getNumParams() << "\n";
-
-        for(unsigned int i=0; i< f->getNumParams(); i++) {
+        *FileStream << "\nproc " + FuncName  + "(";
+        unsigned int nums = f->getNumParams();
+        for(unsigned int i=0; i < nums; i++) {
           std::string type = f->getParamDecl(i)->getType().getAsString();
           std::string name = f->getParamDecl(i)->getName();
-          *FileStream << name + ":" + type + ",";
-
-        // *FileStream << ")"<< "\n";
-
+          if (i == nums - 1) {
+            *FileStream << name + ":" + type + ")";
+          } else {
+            *FileStream << name + ":" + type + ",";
+          }
         }
+        Stmt *body = f->getBody();
+        CharSourceRange range = CharSourceRange::getTokenRange(body->getBeginLoc().getLocWithOffset(1), body->getEndLoc().getLocWithOffset(-1));
+        bool invalid;
 
+        StringRef bodyStr = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
+        if (bodyStr != "") {
+          *FileStream << "=" + bodyStr;
+        }
       }
-
     }
     return true;
-
   }
 
 private:
@@ -313,11 +316,11 @@ public:
 
     llvm::raw_fd_ostream FileStream(FileName, EC, llvm::sys::fs::F_Append);
 
-    for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
-      Visitor.TraverseDecl(*b);
-      // (*b)->dump(FileStream, true);
-      // (*b)->print(FileStream, 2, true);
-    }
+    // for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
+    //   Visitor.TraverseDecl(*b);
+    //   (*b)->dump(FileStream, true);
+    //   (*b)->print(FileStream, 2, true);
+    // }
     return true;
   }
 
