@@ -30,6 +30,8 @@ public:
     auto FileStream = std::make_shared<llvm::raw_fd_ostream>(FileName, EC, llvm::sys::fs::F_Append);
     if (EC) {
       llvm::errs() << "Could not open " << FileName << " for writing\n";
+      return true;
+
     }
     if (isa<IfStmt>(s)) {
       IfStmt *IfStatement = cast<IfStmt>(s);
@@ -39,7 +41,7 @@ public:
       SourceManager &sm = TheRewriter.getSourceMgr();
       CharSourceRange conditionRange = CharSourceRange::getTokenRange(cond->getBeginLoc(), cond->getEndLoc());
       StringRef str = Lexer::getSourceText(conditionRange, sm, LangOptions(), &invalid);
-      *FileStream << str;
+
       Stmt *Else = IfStatement->getElse();
       if (Else)
         TheRewriter.InsertText(Else->getBeginLoc(), "// the 'else' part\n", true, true);
@@ -48,7 +50,7 @@ public:
       AttributedStmt *AttributedStatement = cast<AttributedStmt>(s);
       CharSourceRange AttributedRange = CharSourceRange::getTokenRange(AttributedStatement->getBeginLoc(), AttributedStatement->getEndLoc());
       StringRef str = Lexer::getSourceText(AttributedRange, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str;
 
 
     } else if (isa<LabelStmt>(s)) {
@@ -57,49 +59,49 @@ public:
       LabelStmt *statement = cast<LabelStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str;
     } else if (isa<ValueStmt>(s)) {
       bool invalid;
 
       ValueStmt *statement = cast<ValueStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str;
     } else if (isa<DefaultStmt>(s)) {
       bool invalid;
 
       DefaultStmt *statement = cast<DefaultStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
     } else if (isa<CaseStmt>(s)) {
       bool invalid;
 
       CaseStmt *statement = cast<CaseStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
     } else if (isa<SwitchCase>(s)) {
       bool invalid;
 
       SwitchCase *statement = cast<SwitchCase>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
     } else if (isa<CompoundStmt>(s)) {
       bool invalid;
 
       CompoundStmt *statement = cast<CompoundStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
     } else if (isa<NullStmt>(s)) {
       bool invalid;
 
       NullStmt *statement = cast<NullStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     } else if (isa<DeclStmt>(s)) {
       bool invalid;
@@ -107,7 +109,7 @@ public:
       DeclStmt *statement = cast<DeclStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     } else if (isa<SwitchStmt>(s)) {
       bool invalid;
@@ -115,7 +117,7 @@ public:
       SwitchStmt *statement = cast<SwitchStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     } else if (isa<WhileStmt>(s)) {
       bool invalid;
@@ -123,14 +125,14 @@ public:
       WhileStmt *statement = cast<WhileStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
     } else if (isa<DoStmt>(s)) {
       bool invalid;
 
       DoStmt *statement = cast<DoStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     } else if (isa<ForStmt>(s)) {
       bool invalid;
@@ -138,7 +140,7 @@ public:
       ForStmt *statement = cast<ForStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     } else if (isa<GotoStmt>(s)) {
       bool invalid;
@@ -146,7 +148,7 @@ public:
       GotoStmt *statement = cast<GotoStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
 
     }else if (isa<IndirectGotoStmt>(s)) {
@@ -155,7 +157,7 @@ public:
       IndirectGotoStmt *statement = cast<IndirectGotoStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<ContinueStmt>(s)) {
       bool invalid;
@@ -163,7 +165,7 @@ public:
       ContinueStmt *statement = cast<ContinueStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
 
     }else if (isa<BreakStmt>(s)) {
@@ -172,7 +174,7 @@ public:
       BreakStmt *statement = cast<BreakStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<ReturnStmt>(s)) {
       bool invalid;
@@ -180,7 +182,7 @@ public:
       ReturnStmt *statement = cast<ReturnStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<AsmStmt>(s)) {
       bool invalid;
@@ -196,7 +198,7 @@ public:
       AsmStmt *statement = cast<AsmStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<MSAsmStmt>(s)) {
       bool invalid;
@@ -204,7 +206,7 @@ public:
       MSAsmStmt *statement = cast<MSAsmStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      // *FileStream << str << "\n";
+      // *FileStream << str ;
 
 
     }else if (isa<SEHExceptStmt>(s)) {
@@ -221,7 +223,7 @@ public:
       SEHFinallyStmt *statement = cast<SEHFinallyStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      // *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<SEHTryStmt>(s)) {
       bool invalid;
@@ -229,7 +231,7 @@ public:
       SEHTryStmt *statement = cast<SEHTryStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      // *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<SEHLeaveStmt>(s)) {
       bool invalid;
@@ -237,7 +239,7 @@ public:
       SEHLeaveStmt *statement = cast<SEHLeaveStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      // *FileStream << str << "\n";
+      // *FileStream << str ;
 
     }else if (isa<CapturedStmt>(s)) {
       bool invalid;
@@ -245,7 +247,7 @@ public:
       CapturedStmt *statement = cast<CapturedStmt>(s);
       CharSourceRange range = CharSourceRange::getTokenRange(statement->getBeginLoc(), statement->getEndLoc());
       StringRef str = Lexer::getSourceText(range, sm, LangOptions(), &invalid);
-      // *FileStream << str << "\n";
+      // *FileStream << str ;
     }
 
 
@@ -278,14 +280,15 @@ public:
       // ST = FuncBody->getEndLoc().getLocWithOffset(1);
       // TheRewriter.InsertText(ST, SSAfter.str(), true, true);
       }else{
-        *FileStream << "proc " + FuncName  + "("<< "\n";
+        *FileStream << "proc " + FuncName  + "(";
         // llvm::outs() << f->getNumParams() << "\n";
 
         for(unsigned int i=0; i< f->getNumParams(); i++) {
           std::string type = f->getParamDecl(i)->getType().getAsString();
-          *FileStream << type ;
+          std::string name = f->getParamDecl(i)->getName();
+          *FileStream << name + ":" + type + ",";
 
-        *FileStream << ")"<< "\n";
+        // *FileStream << ")"<< "\n";
 
         }
 
