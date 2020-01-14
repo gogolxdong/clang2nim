@@ -316,11 +316,11 @@ public:
 
     llvm::raw_fd_ostream FileStream(FileName, EC, llvm::sys::fs::F_Append);
 
-    // for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
-    //   Visitor.TraverseDecl(*b);
-    //   (*b)->dump(FileStream, true);
-    //   (*b)->print(FileStream, 2, true);
-    // }
+    for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
+      Visitor.TraverseDecl(*b);
+      // (*b)->dump(FileStream, true);
+      // (*b)->print(FileStream, 2, true);
+    }
     return true;
   }
 
