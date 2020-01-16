@@ -278,8 +278,6 @@ public:
       else {
         for(unsigned int i=0; i < nums; i++) {
           QualType unqualifiedOriginalType = f->getParamDecl(i)->getType().getUnqualifiedType();
-
-
           std::string typeStr = unqualifiedOriginalType.getAsString();
           if (TypeTable.count(typeStr)) {
             typeStr = TypeTable[typeStr];
@@ -310,16 +308,16 @@ public:
             functionStr += name + ": " + typeStr + ",";
           }
         }
-        QualType returnType = f->getReturnType();
+        QualType returnType = f->getReturnType().getUnqualifiedType();
         std::string returnTypeStr = returnType.getAsString();
         if (isa<PointerType>(returnType)) {
-          auto originalPointeeType = returnType.getTypePtr()->getPointeeType();
-          std::string returnTypeName = originalPointeeType.getAsString();
-          if (originalPointeeType->isVoidType()) {
+          auto returnPointeeType = returnType.getTypePtr()->getPointeeType();
+          std::string returnTypeName = returnPointeeType.getAsString();
+          if (returnPointeeType->isVoidType()) {
             returnTypeStr = " pointer";
-          } else if (returnTypeName.find("const ") != std::string::npos){
-              returnTypeStr = "ptr " + returnTypeName.substr(6, returnTypeName.length());
-              if (returnTypeName == "const char") {
+          } else if (returnType.hasQualifiers()){
+              returnTypeStr = "ptr " + returnType.getUnqualifiedType().getAsString();
+              if (returnTypeName == "ptr char") {
                   returnTypeStr = " string";
               }
           } else if (returnTypeName.find("struct ") != std::string::npos) {
